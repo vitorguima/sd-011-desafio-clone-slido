@@ -1,0 +1,20 @@
+.App {
+  text-align: center;
+}
+
+.questions-board {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  border: 1px black solid;
+  width: 80%;
+  min-height: 500px;
+}
+
+.question-item {
+  border: 1px black solid;
+  width: 700px;
+  text-align: justify;
+}
