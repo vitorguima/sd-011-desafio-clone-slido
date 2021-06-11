@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import QuestionsBoard from './QuestionsBoard';
 import '../Styles/QuestionForm.css';
 
 export default class QuestionForm extends Component {
@@ -10,10 +9,11 @@ export default class QuestionForm extends Component {
       askMessage: '',
       authorName: '',
       receivedQuestions: [],
-      isAnswered: [],
+      isAnswered: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleQuestionSubmit = this.handleQuestionSubmit.bind(this);
+    this.handleVotes = this.handleVotes.bind(this);
   }
 
   handleChange({ target }) {
@@ -26,34 +26,46 @@ export default class QuestionForm extends Component {
 
   handleQuestionSubmit() {
     const { askMessage, authorName, receivedQuestions, isAnswered } = this.state;
-    const id = receivedQuestions.length;
+    const id = receivedQuestions.length + 1;
 
     this.setState((state) => ({
       receivedQuestions:
-      [...state.receivedQuestions, ({ askMessage, authorName, id, isAnswered })],
+      [...state.receivedQuestions, ({ askMessage, authorName, isAnswered, id })],
+      [id]: 0,
     }));
   }
 
-  renderSubmitedQuestions(questions) {
+  handleVotes(id) {
+    this.setState((state) => ({
+      [id]: state[id] + 1,
+    }));
+  }
+
+  renderSubmitedQuestions() {
+    const { receivedQuestions } = this.state;
+
     return (
       <div className="question-items-wrapper">
-        {questions.map(({ askMessage, authorName }, index) => (
-          <div className="question-item" key={ index }>
-            <p className="author">{ authorName }</p>
-            <p className="message">{ askMessage }</p>
-            <label htmlFor="isAnswered">
-              Respondida
-              <input
-                name="isAnswered"
-                type="checkbox"
-              />
-            </label>
-          </div>))}
+        {receivedQuestions.map(({ askMessage, authorName, id }) => {
+          const { [id]: value } = this.state;
+          return (
+            <div className="question-item" key={ id } id={ id }>
+              <p className="author">{ authorName }</p>
+              <p className="message">{ askMessage }</p>
+              <button
+                id={ id }
+                type="button"
+                onClick={ () => this.handleVotes(id) }
+              >
+                { value }
+              </button>
+            </div>);
+        })}
       </div>);
   }
 
   render() {
-    const { askMessage, authorName, receivedQuestions } = this.state;
+    const { askMessage, authorName } = this.state;
 
     return (
       <div className="form-wrapper">
@@ -83,10 +95,10 @@ export default class QuestionForm extends Component {
             Enviar
           </button>
         </form>
-        <QuestionsBoard
-          receivedQuestions={ receivedQuestions }
-          renderQuestions={ this.renderSubmitedQuestions }
-        />
+        <h2>Lista de perguntas</h2>
+        <div className="questions-board">
+          {this.renderSubmitedQuestions()}
+        </div>
       </div>
     );
   }
