@@ -6,10 +6,11 @@ export default class QuestionForm extends Component {
     super(props);
 
     this.state = {
-      askMessage: '',
+      id: 1,
+      questionMessage: '',
       authorName: '',
-      receivedQuestions: [],
-      isAnswered: false,
+      receivedQuestions: {},
+      // isAnswered: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleQuestionSubmit = this.handleQuestionSubmit.bind(this);
@@ -25,19 +26,29 @@ export default class QuestionForm extends Component {
   }
 
   handleQuestionSubmit() {
-    const { askMessage, authorName, receivedQuestions, isAnswered } = this.state;
-    const id = receivedQuestions.length + 1;
+    const { questionMessage, authorName, id } = this.state;
 
     this.setState((state) => ({
-      receivedQuestions:
-      [...state.receivedQuestions, ({ askMessage, authorName, isAnswered, id })],
-      [id]: 0,
-    }));
+      id: state.id + 1,
+    }), () => this.setState((state) => ({
+      receivedQuestions: {
+        ...state.receivedQuestions,
+        [id]: { questionMessage, authorName, votes: 0, id },
+      },
+    })));
   }
 
-  handleVotes(id) {
-    this.setState((state) => ({
-      [id]: state[id] + 1,
+  // dúvida sobre substituir a propriedade do objeto ou criar uma nova instância utilizando object assign.
+  // O que fazer?
+  handleVotes({ target }) {
+    const { id } = target;
+    const { receivedQuestions } = this.state;
+    const questionObject = receivedQuestions[id];
+    questionObject.votes += 1;
+    receivedQuestions[id] = questionObject;
+
+    this.setState(() => ({
+      receivedQuestions,
     }));
   }
 
@@ -46,36 +57,36 @@ export default class QuestionForm extends Component {
 
     return (
       <div className="question-items-wrapper">
-        {receivedQuestions.map(({ askMessage, authorName, id }) => {
-          const { [id]: value } = this.state;
-          return (
+        {Object.values(receivedQuestions)
+          .sort((questionA, questionB) => questionB.votes - questionA.votes)
+          .map(({ questionMessage, authorName, id, votes }) => (
             <div className="question-item" key={ id } id={ id }>
               <p className="author">{ authorName }</p>
-              <p className="message">{ askMessage }</p>
+              <p className="message">{ questionMessage }</p>
               <button
                 id={ id }
                 type="button"
-                onClick={ () => this.handleVotes(id) }
+                onClick={ this.handleVotes }
               >
-                { value }
+                { votes }
               </button>
-            </div>);
-        })}
+            </div>
+          ))}
       </div>);
   }
 
   render() {
-    const { askMessage, authorName } = this.state;
+    const { questionMessage, authorName } = this.state;
 
     return (
       <div className="form-wrapper">
         <form>
-          <label htmlFor="askMessage">
+          <label htmlFor="questionMessage">
             Digite sua dúvida
             <textarea
               type="text"
-              name="askMessage"
-              value={ askMessage }
+              name="questionMessage"
+              value={ questionMessage }
               onChange={ this.handleChange }
             />
           </label>
