@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../Styles/QuestionForm.css';
 
 export default class QuestionForm extends Component {
@@ -10,11 +11,11 @@ export default class QuestionForm extends Component {
       questionMessage: '',
       authorName: '',
       receivedQuestions: {},
-      // isAnswered: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleQuestionSubmit = this.handleQuestionSubmit.bind(this);
     this.handleVotes = this.handleVotes.bind(this);
+    this.handleGotResponse = this.handleGotResponse.bind(this);
   }
 
   handleChange({ target }) {
@@ -33,7 +34,13 @@ export default class QuestionForm extends Component {
     }), () => this.setState((state) => ({
       receivedQuestions: {
         ...state.receivedQuestions,
-        [id]: { questionMessage, authorName, votes: 0, id },
+        [id]: {
+          questionMessage,
+          authorName,
+          votes: 0,
+          id,
+          gotResponse: false,
+        },
       },
     })));
   }
@@ -52,14 +59,26 @@ export default class QuestionForm extends Component {
     }));
   }
 
+  handleGotResponse({ target }) {
+    const { id } = target;
+    const { receivedQuestions } = this.state;
+    const questionObject = receivedQuestions[id];
+    questionObject.gotResponse = !questionObject.gotResponse;
+
+    this.setState(() => ({
+      receivedQuestions,
+    }));
+  }
+
   renderSubmitedQuestions() {
     const { receivedQuestions } = this.state;
 
     return (
       <div className="question-items-wrapper">
         {Object.values(receivedQuestions)
+          .filter(({ gotResponse }) => !gotResponse)
           .sort((questionA, questionB) => questionB.votes - questionA.votes)
-          .map(({ questionMessage, authorName, id, votes }) => (
+          .map(({ questionMessage, authorName, id, votes, gotResponse }) => (
             <div className="question-item" key={ id } id={ id }>
               <p className="author">{ authorName }</p>
               <p className="message">{ questionMessage }</p>
@@ -70,6 +89,16 @@ export default class QuestionForm extends Component {
               >
                 { votes }
               </button>
+              <label htmlFor="gotResponse">
+                Pergunta Respondida
+                <input
+                  type="checkbox"
+                  name="gotResponse"
+                  checked={ gotResponse }
+                  onChange={ this.handleGotResponse }
+                  id={ id }
+                />
+              </label>
             </div>
           ))}
       </div>);
@@ -80,6 +109,7 @@ export default class QuestionForm extends Component {
 
     return (
       <div className="form-wrapper">
+        <Link to="/answers">Perguntas Respondidas</Link>
         <form>
           <label htmlFor="questionMessage">
             Digite sua dúvida
