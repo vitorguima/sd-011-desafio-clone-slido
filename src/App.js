@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={ QuestionForm } />
-          <Route path="/answers" component={ AnsweredQuestions } />
+          <Route path="/answers" render={() =>  <AnsweredQuestions { ...props } /> } />
         </Switch>
       </BrowserRouter>
     </div>
