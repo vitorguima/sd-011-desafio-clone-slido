@@ -11,7 +11,7 @@ export default class QuestionsBoard extends Component {
         <h2>Lista de perguntas Respondidas</h2>
         <div className="question-items-wrapper">
           {Object.values(receivedQuestions)
-            .filter(({ gotResponse }) => !gotResponse)
+            .filter(({ gotResponse }) => gotResponse)
             .sort((questionA, questionB) => questionB.votes - questionA.votes)
             .map(({ questionMessage, authorName, id }) => (
               <div className="question-item" key={ id } id={ id }>
