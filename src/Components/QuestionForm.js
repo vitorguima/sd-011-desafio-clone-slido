@@ -1,77 +1,21 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import '../Styles/QuestionForm.css';
+import { Link } from 'react-router-dom';
 
 export default class QuestionForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      id: 1,
-      questionMessage: '',
-      authorName: '',
-      receivedQuestions: {},
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleQuestionSubmit = this.handleQuestionSubmit.bind(this);
-    this.handleVotes = this.handleVotes.bind(this);
-    this.handleGotResponse = this.handleGotResponse.bind(this);
-  }
-
-  handleChange({ target }) {
-    const { name, value } = target;
-
-    this.setState(() => ({
-      [name]: value,
-    }));
-  }
-
-  handleQuestionSubmit() {
-    const { questionMessage, authorName, id } = this.state;
-
-    this.setState((state) => ({
-      id: state.id + 1,
-    }), () => this.setState((state) => ({
-      receivedQuestions: {
-        ...state.receivedQuestions,
-        [id]: {
-          questionMessage,
-          authorName,
-          votes: 0,
-          id,
-          gotResponse: false,
-        },
-      },
-    })));
-  }
-
-  // dúvida sobre substituir a propriedade do objeto ou criar uma nova instância utilizando object assign.
-  // O que fazer?
-  handleVotes({ target }) {
-    const { id } = target;
-    const { receivedQuestions } = this.state;
-    const questionObject = receivedQuestions[id];
-    questionObject.votes += 1;
-    receivedQuestions[id] = questionObject;
-
-    this.setState(() => ({
-      receivedQuestions,
-    }));
-  }
-
-  handleGotResponse({ target }) {
-    const { id } = target;
-    const { receivedQuestions } = this.state;
-    const questionObject = receivedQuestions[id];
-    questionObject.gotResponse = !questionObject.gotResponse;
-
-    this.setState(() => ({
-      receivedQuestions,
-    }));
+    this.renderSubmitedQuestions = this.renderSubmitedQuestions.bind(this);
   }
 
   renderSubmitedQuestions() {
-    const { receivedQuestions } = this.state;
+    const {
+      receivedQuestions,
+      handleVotes,
+      handleGotResponse,
+    } = this.props;
 
     return (
       <div className="question-items-wrapper">
@@ -85,17 +29,17 @@ export default class QuestionForm extends Component {
               <button
                 id={ id }
                 type="button"
-                onClick={ this.handleVotes }
+                onClick={ handleVotes }
               >
-                { votes }
+                { votes === 1 ? `${votes} vote` : `${votes} votes` }
               </button>
               <label htmlFor="gotResponse">
-                Pergunta Respondida
+                Question was answered?
                 <input
                   type="checkbox"
                   name="gotResponse"
                   checked={ gotResponse }
-                  onChange={ this.handleGotResponse }
+                  onChange={ handleGotResponse }
                   id={ id }
                 />
               </label>
@@ -105,42 +49,60 @@ export default class QuestionForm extends Component {
   }
 
   render() {
-    const { questionMessage, authorName } = this.state;
+    const {
+      questionMessage,
+      authorName,
+      handleChange,
+      handleQuestionSubmit,
+    } = this.props;
 
     return (
-      <div className="form-wrapper">
-        <Link to="/answers">Perguntas Respondidas</Link>
-        <form>
-          <label htmlFor="questionMessage">
-            Digite sua dúvida
-            <textarea
-              type="text"
-              name="questionMessage"
-              value={ questionMessage }
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="authorName">
-            Digite seu nome
-            <input
-              type="text"
-              name="authorName"
-              value={ authorName }
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            type="button"
-            onClick={ this.handleQuestionSubmit }
-          >
-            Enviar
-          </button>
-        </form>
-        <h2>Lista de perguntas</h2>
+      <>
+        <div>
+          <form className="form-wrapper">
+            <label htmlFor="questionMessage">
+              <textarea
+                type="text"
+                name="questionMessage"
+                value={ questionMessage }
+                onChange={ handleChange }
+                placeholder="Ask here..."
+              />
+            </label>
+            <label htmlFor="authorName">
+              <input
+                type="text"
+                name="authorName"
+                value={ authorName }
+                onChange={ handleChange }
+                placeholder="Insert your name"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={ handleQuestionSubmit }
+            >
+              Send Question
+            </button>
+          </form>
+        </div>
+        <h2>Questions List</h2>
         <div className="questions-board">
           {this.renderSubmitedQuestions()}
         </div>
-      </div>
+        <Link to="/answers">Answers</Link>
+      </>
     );
   }
 }
+
+QuestionForm.propTypes = {
+  questions: PropTypes.shape({
+    id: PropTypes.shape({
+      questionMessage: PropTypes.string,
+      authorName: PropTypes.string,
+      votes: PropTypes.number,
+      id: PropTypes.number,
+      gotResponse: PropTypes.bool,
+    }),
+  }) }.isRequired;

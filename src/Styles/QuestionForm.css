@@ -1,14 +1,27 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  border-radius: 5px;
+  padding: 20px;
+  align-items: center;
 }
 
 .questions-board {
   display: flex;
   flex-direction: column;
-  align-content: center;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  border: 1px black solid;
+  align-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
   width: 80%;
   min-height: 500px;
 }
@@ -18,4 +31,44 @@
   width: 700px;
   text-align: justify;
   margin: 4px 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea {
+  width: 550px;
+  height: 70px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+
+input[type=text], select {
+  width: 550px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #f8f8f8;
+}
+
+button[type=button] {
+  width: 130px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: center;
+}
+
+button[type=button]:hover {
+  background-color: #45a049;
 }
