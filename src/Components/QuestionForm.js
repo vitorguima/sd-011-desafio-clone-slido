@@ -24,25 +24,36 @@ export default class QuestionForm extends Component {
           .sort((questionA, questionB) => questionB.votes - questionA.votes)
           .map(({ questionMessage, authorName, id, votes, gotResponse }) => (
             <div className="question-item" key={ id } id={ id }>
-              <p className="author">{ authorName }</p>
-              <p className="message">{ questionMessage }</p>
-              <button
-                id={ id }
-                type="button"
-                onClick={ handleVotes }
-              >
-                { votes === 1 ? `${votes} vote` : `${votes} votes` }
-              </button>
-              <label htmlFor="gotResponse">
-                Question was answered?
-                <input
-                  type="checkbox"
-                  name="gotResponse"
-                  checked={ gotResponse }
-                  onChange={ handleGotResponse }
-                  id={ id }
-                />
-              </label>
+              <div className="author-name-container">
+                <span className="author">{ `@${authorName}` }</span>
+              </div>
+              <div className="question-container">
+                <p className="message">{ questionMessage }</p>
+              </div>
+              <div className="upvote-answer-container">
+                <div className="got-response-wrapper">
+                  <label htmlFor="gotResponse">
+                    Question was answered?
+                    <input
+                      type="checkbox"
+                      name="gotResponse"
+                      checked={ gotResponse }
+                      onChange={ handleGotResponse }
+                      id={ id }
+                    />
+                  </label>
+                </div>
+                <div className="upvote-wrapper">
+                  <button
+                    id={ id }
+                    type="button"
+                    onClick={ handleVotes }
+                    className="upvote-button"
+                  >
+                    { votes === 1 ? `${votes} vote` : `${votes} votes` }
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
       </div>);
@@ -81,12 +92,13 @@ export default class QuestionForm extends Component {
             <button
               type="button"
               onClick={ handleQuestionSubmit }
+              className="send-question-button"
             >
               Send Question
             </button>
           </form>
         </div>
-        <h2>Questions List</h2>
+        <h2>Questions</h2>
         <div className="questions-board">
           {this.renderSubmitedQuestions()}
         </div>

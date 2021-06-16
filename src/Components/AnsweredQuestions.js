@@ -15,8 +15,12 @@ export default class QuestionsBoard extends Component {
             .sort((questionA, questionB) => questionB.votes - questionA.votes)
             .map(({ questionMessage, authorName, id }) => (
               <div className="question-item" key={ id } id={ id }>
-                <p className="author">{ authorName }</p>
-                <p className="message">{ questionMessage }</p>
+                <div className="author-name-container">
+                  <span className="author">{ authorName }</span>
+                </div>
+                <div className="question-container">
+                  <p className="message">{ questionMessage }</p>
+                </div>
               </div>
             ))}
         </div>

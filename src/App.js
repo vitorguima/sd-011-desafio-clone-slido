@@ -74,7 +74,7 @@ class App extends Component {
     const { receivedQuestions } = this.state;
     return (
       <div className="App">
-        <h1>Sli.do Simulator</h1>
+        <h1>Ask for free</h1>
         <BrowserRouter>
           <Switch>
             <Route

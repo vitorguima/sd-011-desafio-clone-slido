@@ -1,0 +1,27 @@
+.question-item {
+  display: flex;
+  flex-direction: column;
+  height: 130px;
+  margin-bottom: 40px;
+}
+
+.question-container {
+  margin: 5px 0;
+  display: flex;
+  padding-left: 10px;
+  align-content: flex-start;
+  align-items: flex-start;
+  height: 65px;
+  border-bottom:  1px solid #ccc;
+  border-bottom-style: dashed;
+}
+
+.author-name-container {
+  background-color: rgb(226, 223, 223);
+  height: 30px;
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+

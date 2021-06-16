@@ -57,7 +57,7 @@ input[type=text], select {
   background-color: #f8f8f8;
 }
 
-button[type=button] {
+.send-question-button {
   width: 130px;
   background-color: #4CAF50;
   color: white;
@@ -69,6 +69,16 @@ button[type=button] {
   align-self: center;
 }
 
-button[type=button]:hover {
+.send-question-button:hover {
   background-color: #45a049;
 }
+
+.upvote-answer-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.upvote-button {
+  width: 60px;
+}
+
