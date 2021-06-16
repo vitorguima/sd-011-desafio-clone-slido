@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import QuestionForm from './Components/QuestionForm';
 import AnsweredQuestions from './Components/AnsweredQuestions';
+import Nav from './Components/Nav';
 import './Styles/QuestionForm.css';
 
 class App extends Component {
@@ -76,6 +77,7 @@ class App extends Component {
       <div className="App">
         <h1>Ask for free</h1>
         <BrowserRouter>
+          <Nav />
           <Switch>
             <Route
               exact

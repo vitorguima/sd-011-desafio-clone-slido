@@ -1,0 +1,21 @@
+.nav-bar {
+  display: flex;
+  margin: 10px 0 15px;
+}
+
+.nav-link {
+  margin: 15px;
+  color: rgb(88, 88, 88);
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.item-nav:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.item-nav:active {
+  background-color: #04AA6D;
+  color: white;
+}

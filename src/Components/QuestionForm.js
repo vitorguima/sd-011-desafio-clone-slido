@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import '../Styles/QuestionForm.css';
-import { Link } from 'react-router-dom';
 
 export default class QuestionForm extends Component {
   constructor(props) {
@@ -94,7 +93,7 @@ export default class QuestionForm extends Component {
               onClick={ handleQuestionSubmit }
               className="send-question-button"
             >
-              Send Question
+              Send
             </button>
           </form>
         </div>
@@ -102,7 +101,6 @@ export default class QuestionForm extends Component {
         <div className="questions-board">
           {this.renderSubmitedQuestions()}
         </div>
-        <Link to="/answers">Answers</Link>
       </>
     );
   }

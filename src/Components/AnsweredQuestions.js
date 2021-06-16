@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import '../Styles/AnsweredQuestions.css';
-import { Link } from 'react-router-dom';
 
 export default class QuestionsBoard extends Component {
   render() {
     const { receivedQuestions } = this.props;
     return (
       <div>
-        <h2>Lista de perguntas Respondidas</h2>
+        <h2>Answered questions</h2>
         <div className="question-items-wrapper">
           {Object.values(receivedQuestions)
             .filter(({ gotResponse }) => gotResponse)
@@ -24,7 +23,6 @@ export default class QuestionsBoard extends Component {
               </div>
             ))}
         </div>
-        <Link to="/">Opened questions</Link>
       </div>);
   }
 }
